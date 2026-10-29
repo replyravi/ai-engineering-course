@@ -1,7 +1,0 @@
-# Episode 04 uses the shared course libraries: one .venv at the repo root (see ../SETUP.md).
-# Installing from this folder installs ../requirements-base.txt plus the one extra library below.
--r ../requirements-base.txt
-
-# Tables in the terminal (zoo_report.py and friends). Most setups already have it,
-# because chromadb needs it too; we pin it here because our code imports it directly.
-rich==15.0.0

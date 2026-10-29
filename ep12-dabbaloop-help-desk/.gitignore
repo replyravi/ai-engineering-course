@@ -1,7 +1,0 @@
-# Made by the episode programs - rebuild them any time, never commit them.
-# The handbook index (python rag.py index)
-index/
-# The invented orders database (python seed_db.py)
-dabbaloop.db
-# Reply drafts from the final challenge
-drafts/

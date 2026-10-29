@@ -1,8 +1,0 @@
-# robots_sample.txt - a practice robots.txt written by hand for this course.
-# It is NOT the real file of books.toscrape.com (that site has no robots.txt at all).
-# It shows the three rules you meet most often on real websites.
-
-User-agent: *
-Disallow: /basket/
-Disallow: /accounts/
-Crawl-delay: 2

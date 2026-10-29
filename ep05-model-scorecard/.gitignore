@@ -1,5 +1,0 @@
-# Made by the scripts when you run them - never commit them.
-# The leading / means "only in this folder", so practice/results/ is still part of the repo.
-/results/
-/reports/
-# logs/ is already ignored by the repo's main .gitignore.

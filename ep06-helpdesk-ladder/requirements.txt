@@ -1,4 +1,0 @@
-# Episode 06 uses the shared course libraries: one .venv at the repo root (see ../SETUP.md).
-# Installing from this folder is the same as installing ../requirements-base.txt.
-# (numpy and langsmith, which this episode also uses, come with it.)
--r ../requirements-base.txt

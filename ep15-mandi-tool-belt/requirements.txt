@@ -1,7 +1,0 @@
-# Episode 15 uses the shared course libraries: one .venv at the repo root (see ../SETUP.md).
-# Installing from this folder is the same as installing ../requirements-base.txt. Nothing extra:
-# sqlalchemy (the database), numexpr (the calculator), apify-client (the crawl), langchain-chroma +
-# sentence-transformers (the document index), beautifulsoup4 (fixtures/make_fixture.py) and pytest
-# are all in it. sqlite3, urllib and json are part of Python. No new model is downloaded
-# (the local all-MiniLM-L6-v2 embeddings model is the same one as in Episodes 01, 04, 06 and 07).
--r ../requirements-base.txt

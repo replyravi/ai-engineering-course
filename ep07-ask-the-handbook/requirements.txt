@@ -1,3 +1,0 @@
-# Episode 07 uses the shared course libraries: one .venv at the repo root (see ../SETUP.md).
-# Installing from this folder is the same as installing ../requirements-base.txt.
--r ../requirements-base.txt

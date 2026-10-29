@@ -1,4 +1,0 @@
-# Episode 02 uses the shared course libraries: one .venv at the repo root (see ../SETUP.md).
-# Installing from this folder is the same as installing ../requirements-base.txt.
-# Everything this episode needs is already there: transformers, torch, tiktoken, numpy, matplotlib, scikit-learn.
--r ../requirements-base.txt

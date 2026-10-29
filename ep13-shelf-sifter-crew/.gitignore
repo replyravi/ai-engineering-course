@@ -1,7 +1,0 @@
-# Made by scout.py - never commit them.
-reports/
-
-# Pages you save from books.toscrape.com in Step 3 stay on YOUR computer: they are the site's pages, not ours.
-# The page the tests use, handmade_shelf.html, was written by hand for this course, so it is committed.
-fixtures/*.html
-!fixtures/handmade_shelf.html

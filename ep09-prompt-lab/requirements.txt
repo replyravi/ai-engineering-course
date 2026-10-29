@@ -1,6 +1,0 @@
-# Episode 09 uses the shared course libraries: one .venv at the repo root (see ../SETUP.md).
-# Installing from this folder is the same as installing ../requirements-base.txt.
-# Nothing extra: langchain-core (prompts, few-shot templates), langchain-google-genai (Gemini),
-# pydantic (the forms), python-dotenv (reads .env) and pytest are all in it. tomllib (prompt files), fractions, re and csv
-# come with Python 3.11 and newer.
--r ../requirements-base.txt

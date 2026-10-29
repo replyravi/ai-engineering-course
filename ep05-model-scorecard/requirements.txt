@@ -1,0 +1,5 @@
+# Episode 05 uses the shared course libraries: one .venv at the repo root (see ../SETUP.md).
+# Installing from this folder is the same as installing ../requirements-base.txt.
+# Everything this episode needs is already there: langchain-google-genai (Gemini), pydantic,
+# beautifulsoup4 (reads the product page) and pytest. tomllib, html and re come with Python 3.11+.
+-r ../requirements-base.txt

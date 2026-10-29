@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Practice model A (invented)",
+    "id": "practice-model-a",
+    "provider": "practice",
+    "maker": "nobody: invented for practice",
+    "weights": "open",
+    "licence": "Apache-2.0 (pretend)",
+    "business_use": "yes",
+    "runs_on": "pretend laptop",
+    "tools": true,
+    "used_to_improve_products": {"free": false, "paid": false},
+    "data_use": "Pretend local model: prompts stay on your machine.",
+    "source": "invented for practice, not a real model",
+    "checked": "2026-10-23",
+    "notes": "Practice card. It shows what an open-weights row looks like."
+  },
+  {
+    "name": "Practice model B (invented)",
+    "id": "practice-model-b",
+    "provider": "practice",
+    "maker": "nobody: invented for practice",
+    "weights": "closed",
+    "licence": "Pretend provider terms",
+    "business_use": "check the terms",
+    "runs_on": "pretend cloud",
+    "tools": true,
+    "used_to_improve_products": {"free": true, "paid": false},
+    "data_use": "Pretend cloud API: free tier may use prompts, paid tier does not.",
+    "source": "invented for practice, not a real model",
+    "checked": "2026-10-23",
+    "notes": "Practice card. It shows what a closed API row looks like."
+  }
+]

@@ -1,0 +1,25 @@
+# Secrets - never commit your keys (the course keeps ONE .env at the repo root)
+.env
+
+# Virtual environments (.venv and .venv-crewai live at the repo root)
+.venv*/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Things the programs create when you run them
+logs/
+outputs/
+*.joblib
+
+# Vector databases and other generated data
+chroma_db/
+faiss_index/
+*.sqlite3
+
+# OS files
+.DS_Store
+Thumbs.db

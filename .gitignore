@@ -1,0 +1,41 @@
+# .gitignore - files git must never upload. One file for the whole course.
+
+# Secrets: your keys live here. Never commit them.
+.env
+.env.*
+!.env.example
+
+# Virtual environments (.venv for most episodes, .venv-crewai for episodes 13-14)
+.venv*/
+venv*/
+env/
+
+# Python cache and test cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Things the episode programs create when you run them
+logs/
+outputs/
+*.joblib
+
+# Vector databases and indexes
+chroma_db/
+chroma*/
+faiss_index/
+*.sqlite3
+
+# Model caches (if you point Hugging Face, torch or tiktoken at a folder inside the repo)
+.cache/
+hf_cache/
+models_cache/
+tiktoken_cache/
+
+# Editors and operating systems
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db

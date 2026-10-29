@@ -1,0 +1,9 @@
+# Made by the scripts - anyone can rebuild them in seconds. Never commit them.
+# python seed_db.py
+/mandi.db
+# python ingest.py
+/index/
+# python ask.py saves its last run here
+/runs/
+# python crawl.py: your own crawl (the offline copy in fixtures/ IS committed)
+/crawl.json

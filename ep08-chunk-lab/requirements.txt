@@ -1,0 +1,7 @@
+# Episode 08 uses the shared course libraries: one .venv at the repo root (see ../SETUP.md).
+# Installing from this folder is the same as installing ../requirements-base.txt, plus one pin below.
+-r ../requirements-base.txt
+
+# Coloured chunk views (python -m chunklab show). Already installed with the base libraries
+# (chromadb needs it); pinned here so this episode always gets the version it was tested with.
+rich==15.0.0

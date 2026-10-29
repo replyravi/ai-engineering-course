@@ -1,0 +1,22 @@
+# requirements-crewai.txt - for the CrewAI episodes (13-14). Use a SEPARATE virtual environment.
+# Exact versions tested together on 2026-10-23 (Python 3.11, macOS arm64).
+#
+# Why separate? CrewAI pins older versions of shared libraries:
+#   crewai[google-genai] needs google-genai 1.65.x, but langchain-google-genai 4.4 needs google-genai >= 2.20
+#   crewai[anthropic]    needs anthropic 0.73.x,   but langchain-anthropic 1.7 needs anthropic >= 0.120
+#   crewai also needs pydantic < 2.13 and openai < 3; crewai-tools needs tiktoken < 0.13
+# pip cannot install both sets in one environment, so CrewAI gets its own.
+#
+# Python 3.11, 3.12 or 3.13 only (CrewAI 1.15 does not support Python 3.14+).
+#
+# Install from the repo root, inside the activated .venv-crewai (see SETUP.md, Episode 13):
+#   pip install -r requirements-crewai.txt
+# Using Claude with CrewAI? Also run:  pip install "crewai[anthropic]==1.15.28"
+
+crewai[google-genai]==1.15.28     # Gemini support built in (default, free key)
+crewai-tools==1.15.28
+langchain-core==1.7.0             # lets us reuse LangChain tools inside CrewAI
+langchain-community==0.4.2
+apify-client==3.3.0               # web scraping with Apify
+python-dotenv==1.2.4
+pytest==9.1.1

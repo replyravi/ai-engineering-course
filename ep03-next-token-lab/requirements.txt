@@ -1,0 +1,5 @@
+# Episode 03 uses the shared course libraries: one .venv at the repo root (see ../SETUP.md).
+# Installing from this folder is the same as installing ../requirements-base.txt.
+# Everything this episode needs is already there: transformers, torch, numpy, matplotlib,
+# langchain-google-genai (Gemini) and pytest. No extra packages.
+-r ../requirements-base.txt

@@ -1,0 +1,4 @@
+# Made when you run the programs - rebuild them any time, never commit them.
+index/
+state/
+outputs/

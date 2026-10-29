@@ -1,0 +1,50 @@
+{
+  "about": "Golden questions for eval_retrieval.py. For each in-scope question we know which file(s) hold the answer and a short phrase that must appear in a retrieved chunk. Out-of-scope questions have no answer in the handbook.",
+  "in_scope": [
+    {
+      "question": "What is the refund window for a missed lunch?",
+      "sources": ["refunds.md", "support.md", "delivery.md"],
+      "answer_contains": "6 hours"
+    },
+    {
+      "question": "Which areas are in delivery zone C?",
+      "sources": ["delivery.md"],
+      "answer_contains": "Hinjewadi Phase 1"
+    },
+    {
+      "question": "How much does the monthly Jain thali plan cost?",
+      "sources": ["plans.md"],
+      "answer_contains": "2,690"
+    },
+    {
+      "question": "How many days a month can I pause my plan?",
+      "sources": ["plans.md", "support.md"],
+      "answer_contains": "10 days"
+    },
+    {
+      "question": "What are the chat support hours on Sunday?",
+      "sources": ["support.md"],
+      "answer_contains": "10:00 am to 2:00 pm"
+    },
+    {
+      "question": "Is the kitchen nut-free?",
+      "sources": ["food_safety.pdf"],
+      "answer_contains": "not nut-free"
+    },
+    {
+      "question": "How long can I keep the delivered food before eating it?",
+      "sources": ["food_safety.pdf"],
+      "answer_contains": "within 3 hours"
+    },
+    {
+      "question": "What is the deposit for the steel meal box?",
+      "sources": ["delivery.md"],
+      "answer_contains": "deposit of ₹350"
+    }
+  ],
+  "out_of_scope": [
+    "Who founded Dabbaloop?",
+    "Is there a student discount?",
+    "What is the best laptop for coding?"
+  ]
+}

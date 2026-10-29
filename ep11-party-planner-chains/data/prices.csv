@@ -1,0 +1,28 @@
+# SAMPLE prices written by Ravi for this course. NOT live market prices. Edit them to match your local shop.
+# One row per item: the shop unit (kg, litre or piece) and the price in rupees for ONE unit.
+# Lines that start with # are notes and are skipped. Add a row for anything the model asks for that is missing.
+item,unit,price_rupees
+rice,kg,64
+toor dal,kg,160
+moong dal,kg,130
+tamarind,kg,200
+sambar powder,kg,480
+rasam powder,kg,500
+tomato,kg,40
+onion,kg,45
+potato,kg,35
+drumstick,kg,120
+brinjal,kg,50
+beans,kg,80
+carrot,kg,60
+coconut,piece,35
+curd,kg,70
+milk,litre,58
+ghee,kg,650
+coconut oil,litre,240
+jaggery,kg,70
+vermicelli,kg,120
+cashew nuts,kg,950
+curry leaves bunch,piece,10
+banana leaf,piece,6
+papad,piece,3

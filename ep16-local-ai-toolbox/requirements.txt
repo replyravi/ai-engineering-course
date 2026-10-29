@@ -1,0 +1,10 @@
+# Episode 16 uses the shared course libraries: one .venv at the repo root (see ../SETUP.md).
+# Installing from this folder installs ../requirements-base.txt plus the two extra pins below.
+-r ../requirements-base.txt
+
+# Reads how much memory (RAM) the program uses (step 13, memory_check.py). Small, no other dependencies.
+psutil==7.2.2
+
+# The Hugging Face Hub library (downloads, the cache, model cards in models.py). The base file does not pin it,
+# so we pin the version this episode was tested with. Newer releases exist but are untested here.
+huggingface_hub==1.33.0

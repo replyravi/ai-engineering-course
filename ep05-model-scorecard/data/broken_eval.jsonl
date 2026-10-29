@@ -1,0 +1,5 @@
+{"id": "arith-01", "tag": "arithmetic", "check": "exact", "question": "What is 12 times 12? Reply with only the number.", "answer": "144"}
+{"id": "arith-02", "tag": "arithmetic", "check": "exact", "question": "What is 7 plus 8? Reply with only the number."}
+{"id": "gk-01", "tag": "india_gk", "check": "exact", "question": "Which city is the capital of Kerala?", "answer": "Thiruvananthapuram",}
+{"id": "arith-01", "tag": "arithmetic", "check": "exact", "question": "What is 9 minus 4? Reply with only the number.", "answer": "5"}
+{"id": "gk-02", "tag": "india_gk", "check": "spelling", "question": "Spell the name of the capital of Assam.", "answer": "Dispur"}

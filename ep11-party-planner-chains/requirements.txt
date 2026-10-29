@@ -1,0 +1,4 @@
+# Episode 11 uses the shared course libraries: one .venv at the repo root (see ../SETUP.md).
+# Installing from this folder is the same as installing ../requirements-base.txt.
+# (numexpr, which the calculator uses, is already pinned there. No model is downloaded.)
+-r ../requirements-base.txt

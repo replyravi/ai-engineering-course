@@ -1,0 +1,2 @@
+A plain text note.
+Second line.

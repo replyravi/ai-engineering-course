@@ -1,0 +1,1 @@
+Python lab notes: a list comprehension builds a new list in one line, like squares = [n * n for n in numbers]. Add an if at the end to keep only some items. Dictionaries map keys to values and finding a key is fast. Assignment due Friday: read a CSV of marks and print the class average and the top three students.

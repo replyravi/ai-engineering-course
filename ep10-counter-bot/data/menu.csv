@@ -1,0 +1,13 @@
+item,price_rs,veg,contains_nuts,spice,description
+Masala chai,20,yes,no,mild,"Strong tea boiled with milk, fresh ginger and green cardamom"
+Cutting chai,12,yes,no,none,Half a glass of our everyday milky tea
+Lemon ginger tea,25,yes,no,none,"Black tea with lemon, ginger and a spoon of honey, no milk"
+Kesar badam doodh,45,yes,yes,none,"Warm milk with saffron, crushed almonds and pistachios"
+Vada pav,25,yes,no,hot,Spiced potato fritter in a soft bun with dry garlic chutney
+Kanda poha,30,yes,yes,mild,"Flattened rice with onion, curry leaves and roasted peanuts"
+Samosa (2 pieces),30,yes,no,medium,"Crisp pastry with potato and peas, served with tamarind chutney"
+Khasta kachori,35,yes,no,medium,"Flaky fried pastry stuffed with spiced moong dal, served with green chutney"
+Bun maska,25,yes,no,none,Soft bun with a thick layer of butter
+Egg bhurji pav,60,no,no,medium,"Scrambled eggs with onion, tomato and green chilli, with two buttered pav"
+Paneer kathi roll,80,yes,no,hot,"Grilled paneer, onion and mint chutney rolled in a paratha"
+Peanut chikki,15,yes,yes,none,Crunchy jaggery bar packed with roasted peanuts

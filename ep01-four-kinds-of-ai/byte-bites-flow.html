@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Byte Bites — Episode 01 function map</title>
+<style>
+  :root {
+    --bg: #efeae0;
+    --ink: #1c1917;
+    --muted: #57534e;
+    --card: #fffdf8;
+    --line: #e3d9c8;
+    --stamp: #9a3412;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", system-ui, sans-serif;
+    line-height: 1.45;
+  }
+  a { color: inherit; }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.92em;
+  }
+  .page { max-width: 1080px; margin: 0 auto; padding: 20px 18px 72px; }
+  header.top { padding-bottom: 8px; }
+  .kicker { color: var(--stamp); font-weight: 500; letter-spacing: 0.02em; }
+  h1 { font-family: Palatino, "Palatino Linotype", Georgia, serif; font-weight: 500; font-size: 2rem; line-height: 1.15; margin: 6px 0 8px; }
+  .lead { max-width: 68ch; color: var(--muted); margin: 0 0 14px; }
+  nav.jump {
+    position: sticky; top: 0; z-index: 2;
+    display: flex; flex-wrap: wrap; gap: 6px;
+    background: rgba(239, 234, 224, 0.94);
+    padding: 8px 0 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  nav.jump a {
+    text-decoration: none;
+    border: 1px solid var(--line);
+    background: var(--card);
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 0.92rem;
+  }
+  nav.jump a:focus-visible, a.node:focus-visible, button:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+  section { scroll-margin-top: 64px; margin-top: 28px; }
+  h2 { font-family: Palatino, "Palatino Linotype", Georgia, serif; font-weight: 500; font-size: 1.45rem; margin: 0 0 8px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px 14px; margin: 8px 0 14px; font-size: 0.92rem; }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 6px; vertical-align: middle; }
+  .s-data { background: #78716c; } .s-shared { background: #44403c; }
+  .s-a { background: #9a3412; } .s-b { background: #1e40af; }
+  .s-c { background: #166534; } .s-d { background: #9f1239; }
+  .s-llm { background: #6d28d9; } .s-app { background: #0f172a; }
+  .flow { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 16px; align-items: start; }
+  .stack { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .approaches, .apps, .side-col { display: grid; gap: 10px; width: 100%; }
+  .approaches { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .apps { grid-template-columns: 1fr 1fr; }
+  a.node {
+    display: block; text-decoration: none; background: var(--card);
+    border: 1.5px solid var(--ink); border-radius: 10px; padding: 10px 12px;
+  }
+  a.node[aria-current="true"] { box-shadow: inset 0 0 0 2px var(--stamp); }
+  a.node strong { display: block; }
+  a.node span { display: block; color: var(--muted); font-size: 0.88rem; margin-top: 2px; }
+  .dot { width: 9px; height: 9px; border-radius: 2px; display: inline-block; margin-right: 6px; }
+  .arrow { width: 2px; height: 26px; background: var(--ink); position: relative; margin: 4px 0; }
+  .arrow::after {
+    content: ""; position: absolute; left: -4px; bottom: -1px;
+    border-left: 5px solid transparent; border-right: 5px solid transparent;
+    border-top: 7px solid var(--ink);
+  }
+  .arrow-label { font-size: 0.82rem; color: var(--muted); margin-bottom: 4px; }
+  .side-col { position: sticky; top: 64px; }
+  .made { margin-top: 14px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips a { text-decoration: none; border: 1px dashed var(--ink); border-radius: 8px; padding: 6px 8px; background: var(--card); font-size: 0.88rem; }
+  pre.tree {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 16px; overflow-x: auto; line-height: 1.35; font-size: 0.86rem;
+  }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 10px; margin: 10px 0; }
+  summary { cursor: pointer; padding: 12px 14px; font-weight: 500; }
+  summary span { color: var(--muted); font-weight: 400; }
+  .table-wrap { overflow-x: auto; padding: 0 8px 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px; border-top: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 500; }
+  .walk { margin-top: 8px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 12px; }
+  button {
+    background: var(--ink); color: #fffdf8; border: 0; border-radius: 999px;
+    padding: 8px 12px; font: inherit; cursor: pointer;
+  }
+  button:disabled { background: #a8a29e; cursor: default; }
+  ol.rail { list-style: none; margin: 0; padding: 0; }
+  .step {
+    display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 10px;
+    padding: 8px 0 8px 0;
+  }
+  .num {
+    width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--ink);
+    display: flex; align-items: center; justify-content: center; font-size: 0.85rem; background: var(--card);
+  }
+  .step.on .num { background: var(--ink); color: #fffdf8; }
+  .step.on .body { border-left-color: var(--ink); }
+  .step .body { border-left: 2px solid var(--line); padding: 0 0 12px 12px; }
+  .step p { margin: 4px 0; }
+  .where { color: var(--muted); }
+  .note { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+  @media (max-width: 860px) {
+    .flow, .approaches, .apps { grid-template-columns: 1fr 1fr; }
+    .flow { grid-template-columns: 1fr; }
+    .side-col { position: static; }
+  }
+  @media (max-width: 560px) {
+    .approaches, .apps { grid-template-columns: 1fr; }
+    h1 { font-size: 1.6rem; }
+  }
+  @media print {
+    nav.jump, .controls { display: none; }
+    details > * { display: block !important; }
+    a.node { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <div class="kicker">Byte Bites · Episode 01</div>
+    <h1>Where each function is created, and who calls it</h1>
+    <p class="lead">One CSV of 40 canteen comments. Four ways to label them. Two scripts that reuse those functions. Click a box to open its table. Use Next step while you talk through a run.</p>
+  </header>
+
+  <nav class="jump" aria-label="Page sections">
+    <a href="#map">Map</a>
+    <a href="#files">Folder</a>
+    <a href="#catalog">Functions</a>
+    <a href="#sentence">One sentence</a>
+    <a href="#board">Scoreboard</a>
+    <a href="#deploy">Deploy</a>
+    <a href="#commands">Commands</a>
+  </nav>
+
+  <section id="map">
+    <h2>File map</h2>
+    <div class="legend" aria-label="Color legend">
+      <span><i class="swatch s-data"></i>Data</span>
+      <span><i class="swatch s-shared"></i>Shared kitchen</span>
+      <span><i class="swatch s-a"></i>A rules</span>
+      <span><i class="swatch s-b"></i>B machine learning</span>
+      <span><i class="swatch s-c"></i>C deep learning</span>
+      <span><i class="swatch s-d"></i>D generative AI</span>
+      <span><i class="swatch s-llm"></i>Model door</span>
+      <span><i class="swatch s-app"></i>Apps that reuse A–D</span>
+    </div>
+    <div class="flow">
+      <div class="stack">
+        <a class="node" href="#file-csv"><strong><i class="dot s-data"></i>data/feedback.csv</strong><span>40 rows · text, label, note</span></a>
+        <div class="arrow"></div>
+        <div class="arrow-label">read by load_feedback</div>
+        <a class="node" href="#file-common"><strong><i class="dot s-shared"></i>common.py</strong><span>load_feedback · clean_text · load_and_split</span></a>
+        <div class="arrow"></div>
+        <div class="arrow-label">same table, four cooks</div>
+        <div class="approaches">
+          <a class="node" href="#file-a"><strong><i class="dot s-a"></i>a_rules.py</strong><span>rules_label</span></a>
+          <a class="node" href="#file-b"><strong><i class="dot s-b"></i>b_supervised.py</strong><span>train_model</span></a>
+          <a class="node" href="#file-c"><strong><i class="dot s-c"></i>c_clusters.py</strong><span>embed · find_groups</span></a>
+          <a class="node" href="#file-d"><strong><i class="dot s-d"></i>d_genai.py</strong><span>classify</span></a>
+        </div>
+        <div class="arrow"></div>
+        <div class="arrow-label">A B C called live · D’s scoreboard reads a saved CSV</div>
+        <div class="apps">
+          <a class="node" href="#file-compare"><strong><i class="dot s-app"></i>compare.py</strong><span>four_answers · show_scoreboard</span></a>
+          <a class="node" href="#file-predict"><strong><i class="dot s-app"></i>predict.py</strong><span>load_or_train · predict · log</span></a>
+        </div>
+      </div>
+      <div class="side-col">
+        <a class="node" href="#file-llm"><strong><i class="dot s-llm"></i>llm.py</strong><span>get_llm · get_embeddings · finds .env</span></a>
+        <p class="arrow-label">get_embeddings → c_clusters.embed and compare.local_embeddings<br>get_llm → first_call, d_genai, e_reply</p>
+        <div class="side-col">
+          <a class="node" href="#file-check"><strong>check_setup.py</strong><span>no network call</span></a>
+          <a class="node" href="#file-first"><strong>first_call.py</strong><span>llm.invoke</span></a>
+          <a class="node" href="#file-e"><strong>e_reply_and_probe.py</strong><span>draft_replies · ask</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="made">
+      <div class="arrow-label">Files created only after you run a script</div>
+      <div class="chips">
+        <a href="#file-c">outputs/clusters.png</a>
+        <a href="#file-d">outputs/gemini_test_labels.csv</a>
+        <a href="#file-predict">outputs/feedback_model.joblib</a>
+        <a href="#file-predict">logs/predictions.csv</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="files">
+    <h2>Folder</h2>
+    <p class="lead">Open <code>ai-engineering-course</code> in the editor, not only this episode. The virtual environment and the key live one level up.</p>
+    <pre class="tree">ai-engineering-course/
+├── .env                          key you create (git ignores it)
+├── .env.example
+├── .venv/                        one Python environment for the course
+├── SETUP.md
+├── requirements-base.txt
+└── ep01-four-kinds-of-ai/
+    ├── README.md                 the lesson
+    ├── CHALLENGE.md              extra task
+    ├── requirements.txt          points at ../requirements-base.txt
+    ├── pytest.ini
+    ├── data/feedback.csv         40 comments + human labels
+    ├── common.py                 load, clean, split
+    ├── llm.py                    Gemini / OpenAI / Claude / Ollama
+    ├── check_setup.py            step 4
+    ├── first_call.py             step 5
+    ├── a_rules.py                approach A
+    ├── b_supervised.py           approach B
+    ├── c_clusters.py             approach C
+    ├── d_genai.py                approach D
+    ├── e_reply_and_probe.py      replies + hallucination probe
+    ├── predict.py                save model, label one line, log it
+    ├── compare.py                scoreboard
+    ├── testing/fakes.py          pretend models for tests
+    └── tests/                    offline tests
+        ├── conftest.py           blocks the internet
+        ├── test_rules.py
+        ├── test_pipeline.py
+        ├── test_llm.py
+        └── test_genai.py</pre>
+  </section>
+
+  <section id="catalog">
+    <h2>Function catalog</h2>
+    <p class="note"><code>def</code> creates the function once. <code>from file import name</code> borrows it. <code>python file.py</code> runs <code>main</code> because <code>__name__ == "__main__"</code>. Importing the file does not run <code>main</code>.</p>
+
+    <details id="file-csv">
+      <summary>data/feedback.csv <span>· data, not a function</span></summary>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Column</th><th>Meaning</th></tr>
+          <tr><td><code>id</code></td><td>1–40</td></tr>
+          <tr><td><code>text</code></td><td>the student comment</td></tr>
+          <tr><td><code>label</code></td><td>answer key: praise, complaint, or suggestion</td></tr>
+          <tr><td><code>note</code></td><td>empty, sarcasm, or negation</td></tr>
+        </table>
+      </div>
+    </details>
+
+    <details id="file-common" open>
+      <summary>common.py <span>· created here, called by almost everyone</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Created</th><th>Line</th><th>It calls</th><th>Called by</th></tr></thead>
+          <tbody>
+            <tr><td><code>load_feedback</code></td><td>28</td><td><code>pandas.read_csv</code></td><td><code>load_and_split</code>, <code>a_rules.main</code>, <code>c_clusters.main</code>, <code>e_reply.main</code>, tests</td></tr>
+            <tr><td><code>show_dataset</code></td><td>34</td><td>print</td><td><code>python common.py</code> only</td></tr>
+            <tr><td><code>clean_text</code></td><td>50</td><td><code>re.sub</code></td><td><code>load_and_split</code>, <code>predict.predict</code>, <code>compare.four_answers</code>, tests</td></tr>
+            <tr><td><code>split_feedback</code></td><td>62</td><td><code>train_test_split</code> seed 42, 10 test rows</td><td><code>load_and_split</code>, tests</td></tr>
+            <tr><td><code>load_and_split</code></td><td>72</td><td><code>load_feedback</code>, <code>clean_text</code>, <code>split_feedback</code></td><td><code>b_supervised.main</code>, <code>d_genai.main</code>, <code>predict.load_or_train</code>, <code>compare.show_scoreboard</code>, <code>compare.four_answers</code>, tests</td></tr>
+            <tr><td><code>show_split</code></td><td>79</td><td><code>clean_text</code></td><td><code>python common.py</code> only</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details id="file-llm">
+      <summary>llm.py <span>· the only file that builds a real model client</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Created</th><th>Line</th><th>It calls</th><th>Called by</th></tr></thead>
+          <tbody>
+            <tr><td><code>find_env_file</code></td><td>39</td><td>walk parent folders for <code>.env</code></td><td>once, at import: <code>ENV_FILE = find_env_file()</code></td></tr>
+            <tr><td><code>get_provider</code></td><td>126</td><td><code>os.getenv("LLM_PROVIDER")</code></td><td><code>get_model_name</code>, <code>get_llm</code>, <code>get_crewai_llm</code>, <code>first_call.main</code>, <code>check_setup.main</code></td></tr>
+            <tr><td><code>get_model_name</code></td><td>137</td><td><code>get_provider</code></td><td><code>get_llm</code>, <code>get_crewai_llm</code>, <code>first_call.main</code>, <code>check_setup.main</code></td></tr>
+            <tr><td><code>check_api_key</code></td><td>144</td><td>reads the key name for that provider</td><td><code>get_llm</code>, <code>get_embeddings</code> when embeddings are Gemini, <code>get_crewai_llm</code></td></tr>
+            <tr><td><code>get_llm</code></td><td>168</td><td><code>get_provider</code>, <code>get_model_name</code>, <code>check_api_key</code></td><td><code>first_call.main</code>, <code>d_genai.main</code>, <code>build_classifier</code> if no llm was passed, <code>e_reply.main</code></td></tr>
+            <tr><td><code>get_embeddings</code></td><td>210</td><td>local MiniLM, or Gemini if <code>.env</code> says so</td><td><code>c_clusters.embed</code> when no embeddings were passed, <code>compare.local_embeddings</code></td></tr>
+            <tr><td><code>get_crewai_llm</code></td><td>241</td><td><code>get_provider</code>, <code>get_model_name</code>, <code>check_api_key</code></td><td>not used by episode 1 scripts; tests and later episodes</td></tr>
+            <tr><td><code>MissingAPIKeyError</code></td><td>118</td><td>class</td><td>caught in <code>first_call</code>, <code>d_genai</code>, <code>e_reply</code>, <code>compare.four_answers</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details id="file-a">
+      <summary>a_rules.py <span>· a person wrote the keywords</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Created</th><th>Line</th><th>It calls</th><th>Called by</th></tr></thead>
+          <tbody>
+            <tr><td><code>RULEBOOK</code></td><td>16</td><td>dict, suggestion then praise then complaint</td><td><code>rules_label</code>, tests</td></tr>
+            <tr><td><code>rules_label</code></td><td>25</td><td><code>re.findall</code>, first matching word wins</td><td><code>a_rules.main</code>, <code>compare.score_rules</code>, <code>compare.four_answers</code>, tests</td></tr>
+            <tr><td><code>accuracy</code></td><td>35</td><td><code>zip</code></td><td>tests only. <code>main</code> counts matches itself</td></tr>
+            <tr><td><code>main</code></td><td>41</td><td><code>load_feedback</code>, <code>rules_label</code></td><td><code>python a_rules.py</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details id="file-b">
+      <summary>b_supervised.py <span>· TF-IDF + logistic regression</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Created</th><th>Line</th><th>It calls</th><th>Called by</th></tr></thead>
+          <tbody>
+            <tr><td><code>train_model</code></td><td>32</td><td><code>TfidfVectorizer</code>, <code>LogisticRegression.fit</code></td><td><code>b_supervised.main</code>, <code>predict.load_or_train</code>, <code>compare.score_supervised</code>, <code>compare.four_answers</code>, tests</td></tr>
+            <tr><td><code>top_words</code></td><td>43</td><td>TF-IDF names + <code>coef_</code></td><td><code>b_supervised.main</code>, tests</td></tr>
+            <tr><td><code>main</code></td><td>54</td><td><code>load_and_split</code>, <code>train_model</code>, <code>model.predict</code>, <code>top_words</code></td><td><code>python b_supervised.py</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details id="file-c">
+      <summary>c_clusters.py <span>· embeddings + k-means, labels hidden</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Created</th><th>Line</th><th>It calls</th><th>Called by</th></tr></thead>
+          <tbody>
+            <tr><td><code>embed</code></td><td>35</td><td><code>get_embeddings</code> only if no embeddings were passed, then <code>embed_documents</code>, <code>normalize</code></td><td><code>c_clusters.main</code>, <code>compare.fit_named_groups</code>, <code>compare.score_clusters</code>, <code>compare.four_answers</code></td></tr>
+            <tr><td><code>find_groups</code></td><td>44</td><td><code>KMeans.fit</code></td><td><code>c_clusters.main</code>, <code>compare.fit_named_groups</code>, tests</td></tr>
+            <tr><td><code>save_picture</code></td><td>49</td><td>PCA, matplotlib → <code>outputs/clusters.png</code></td><td><code>c_clusters.main</code></td></tr>
+            <tr><td><code>main</code></td><td>83</td><td><code>load_feedback</code>, <code>embed</code>, <code>find_groups</code>, <code>save_picture</code></td><td><code>python c_clusters.py</code>, tests with <code>fake_embeddings()</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details id="file-d">
+      <summary>d_genai.py <span>· Gemini, zero training rows</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Created</th><th>Line</th><th>It calls</th><th>Called by</th></tr></thead>
+          <tbody>
+            <tr><td><code>FeedbackLabel</code></td><td>26</td><td>Pydantic class: label + reason</td><td><code>build_classifier</code>, tests</td></tr>
+            <tr><td><code>build_classifier</code></td><td>43</td><td><code>get_llm</code> only if llm is None, then <code>with_structured_output</code></td><td><code>classify</code></td></tr>
+            <tr><td><code>classify</code></td><td>50</td><td><code>build_classifier</code>, <code>chain.invoke</code> once per text</td><td><code>d_genai.main</code>, <code>compare.four_answers</code>, tests</td></tr>
+            <tr><td><code>save_results</code></td><td>61</td><td>writes <code>outputs/gemini_test_labels.csv</code></td><td><code>d_genai.main</code></td></tr>
+            <tr><td><code>main</code></td><td>71</td><td><code>get_llm</code>, <code>load_and_split</code>, <code>classify</code>, <code>save_results</code></td><td><code>python d_genai.py</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details id="file-e">
+      <summary>e_reply_and_probe.py <span>· generate text, then paste one fact</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Created</th><th>Line</th><th>It calls</th><th>Called by</th></tr></thead>
+          <tbody>
+            <tr><td><code>draft_replies</code></td><td>43</td><td><code>reply_prompt | llm | StrOutputParser</code></td><td><code>e_reply.main</code>, tests</td></tr>
+            <tr><td><code>ask</code></td><td>49</td><td>plain prompt, or grounded prompt when <code>fact</code> is set</td><td><code>e_reply.main</code> twice, tests</td></tr>
+            <tr><td><code>main</code></td><td>58</td><td><code>get_llm</code>, <code>load_feedback</code>, <code>draft_replies</code>, <code>ask</code></td><td><code>python e_reply_and_probe.py</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details id="file-predict">
+      <summary>predict.py <span>· train once, reuse the file, log every sentence</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Created</th><th>Line</th><th>It calls</th><th>Called by</th></tr></thead>
+          <tbody>
+            <tr><td><code>load_or_train</code></td><td>24</td><td><code>joblib.load</code> or <code>load_and_split</code> + <code>train_model</code> + <code>joblib.dump</code></td><td><code>predict.main</code></td></tr>
+            <tr><td><code>predict</code></td><td>36</td><td><code>clean_text</code>, <code>predict_proba</code></td><td><code>predict.main</code></td></tr>
+            <tr><td><code>log_prediction</code></td><td>43</td><td>append <code>logs/predictions.csv</code></td><td><code>predict.main</code></td></tr>
+            <tr><td><code>main</code></td><td>56</td><td><code>load_or_train</code>, <code>predict</code>, <code>log_prediction</code></td><td><code>python predict.py "..."</code>, tests</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details id="file-compare" open>
+      <summary>compare.py <span>· the meeting point</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Created</th><th>Line</th><th>It calls</th><th>Called by</th></tr></thead>
+          <tbody>
+            <tr><td><code>timed</code></td><td>31</td><td><code>perf_counter</code></td><td><code>score_rules</code>, <code>score_supervised</code>, <code>score_clusters</code></td></tr>
+            <tr><td><code>score_rules</code></td><td>38</td><td><code>rules_label</code> on each test row</td><td><code>build_rows</code></td></tr>
+            <tr><td><code>score_supervised</code></td><td>43</td><td><code>train_model</code>, then <code>model.predict</code></td><td><code>build_rows</code></td></tr>
+            <tr><td><code>fit_named_groups</code></td><td>49</td><td><code>embed</code>, <code>find_groups</code>, <code>Counter</code></td><td><code>score_clusters</code>, <code>four_answers</code></td></tr>
+            <tr><td><code>local_embeddings</code></td><td>63</td><td><code>get_embeddings</code> if none were passed</td><td><code>score_clusters</code>, <code>four_answers</code></td></tr>
+            <tr><td><code>score_clusters</code></td><td>71</td><td><code>local_embeddings</code>, <code>fit_named_groups</code>, <code>embed</code>, <code>kmeans.predict</code></td><td><code>build_rows</code></td></tr>
+            <tr><td><code>saved_gemini_score</code></td><td>79</td><td>reads the CSV from <code>d_genai</code>. No Gemini call</td><td><code>build_rows</code></td></tr>
+            <tr><td><code>format_ms</code></td><td>99</td><td>—</td><td><code>format_scoreboard</code></td></tr>
+            <tr><td><code>format_scoreboard</code></td><td>105</td><td><code>format_ms</code></td><td><code>show_scoreboard</code>, tests</td></tr>
+            <tr><td><code>build_rows</code></td><td>117</td><td>the four score functions</td><td><code>show_scoreboard</code>, tests</td></tr>
+            <tr><td><code>show_scoreboard</code></td><td>135</td><td><code>load_and_split</code>, <code>build_rows</code>, <code>format_scoreboard</code></td><td><code>compare.main</code> when there is no sentence</td></tr>
+            <tr><td><code>four_answers</code></td><td>152</td><td><code>rules_label</code>, <code>load_and_split</code>, <code>clean_text</code>, <code>train_model</code>, <code>local_embeddings</code>, <code>fit_named_groups</code>, <code>embed</code>, <code>classify</code></td><td><code>compare.main</code> when you pass a sentence</td></tr>
+            <tr><td><code>main</code></td><td>172</td><td><code>four_answers</code> or <code>show_scoreboard</code></td><td><code>python compare.py</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details id="file-check">
+      <summary>check_setup.py <span>· local checks only</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Created</th><th>Line</th><th>It calls</th><th>Called by</th></tr></thead>
+          <tbody>
+            <tr><td><code>mask</code></td><td>23</td><td>keeps first and last 4 characters</td><td><code>check_setup.main</code>, tests</td></tr>
+            <tr><td><code>repo_root</code></td><td>30</td><td>walks up to <code>.env.example</code></td><td><code>check_setup.main</code></td></tr>
+            <tr><td><code>ignored_by_git</code></td><td>38</td><td><code>git check-ignore</code> or reads <code>.gitignore</code></td><td><code>check_setup.main</code>, tests</td></tr>
+            <tr><td><code>line</code></td><td>58</td><td>print</td><td><code>check_setup.main</code></td></tr>
+            <tr><td><code>main</code></td><td>62</td><td><code>repo_root</code>, <code>get_provider</code>, <code>get_model_name</code>, <code>mask</code>, <code>ignored_by_git</code>. Does not call <code>get_llm</code></td><td><code>python check_setup.py</code>, tests</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details id="file-first">
+      <summary>first_call.py <span>· one chat message</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Created</th><th>Line</th><th>It calls</th><th>Called by</th></tr></thead>
+          <tbody>
+            <tr><td><code>main</code></td><td>20</td><td><code>get_provider</code>, <code>get_model_name</code>, <code>get_llm</code>, <code>llm.invoke</code>, prints <code>reply.text</code></td><td><code>python first_call.py</code>, tests with <code>fake_llm</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details id="file-fakes">
+      <summary>testing/fakes.py and tests <span>· same functions, pretend models</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Created</th><th>Line</th><th>It calls</th><th>Called by</th></tr></thead>
+          <tbody>
+            <tr><td><code>fake_llm</code></td><td>fakes.py:114</td><td><code>FakeChatModel</code></td><td><code>tests/test_genai.py</code></td></tr>
+            <tr><td><code>structured_reply</code></td><td>fakes.py:147</td><td><code>tool_call</code></td><td>tests that call <code>classify</code></td></tr>
+            <tr><td><code>fake_embeddings</code></td><td>fakes.py:171</td><td><code>DeterministicFakeEmbedding</code></td><td><code>test_pipeline.py</code>, <code>test_genai.py</code></td></tr>
+            <tr><td><code>no_internet</code></td><td>conftest.py:37</td><td>replaces <code>socket.connect</code></td><td>every test, automatically</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <section id="sentence">
+    <h2>Walk: one sentence, four brains</h2>
+    <p class="lead">Command: <code>python compare.py "Great job, the dosa was cold again."</code></p>
+    <div class="walk" data-walk>
+      <div class="controls">
+        <button type="button" data-prev>Previous step</button>
+        <button type="button" data-next>Next step</button>
+        <span data-step-label>Step 1</span>
+      </div>
+      <ol class="rail">
+        <li class="step"><span class="num">1</span><div class="body"><strong>compare.main</strong><p>Joins the words after the script name into one sentence. Because words exist, it calls <code>four_answers</code>, not the scoreboard.</p><p class="where">Created in compare.py:172 · calls four_answers</p></div></li>
+        <li class="step"><span class="num">2</span><div class="body"><strong>rules_label(sentence)</strong><p>Splits the sentence into words. <code>RULEBOOK</code> is read suggestion, then praise, then complaint. <code>great</code> matches praise, so it returns <code>praise</code> and never looks at <code>cold</code>.</p><p class="where">Created in a_rules.py:25 · called by four_answers · README recording: praise</p></div></li>
+        <li class="step"><span class="num">3</span><div class="body"><strong>load_and_split()</strong><p><code>load_feedback</code> reads the CSV. <code>clean_text</code> runs on every row. <code>split_feedback</code> hides 10 rows with seed 42. Returns 30 train rows and 10 test rows.</p><p class="where">Created in common.py:72 · called by four_answers</p></div></li>
+        <li class="step"><span class="num">4</span><div class="body"><strong>train_model(...) then predict</strong><p><code>clean_text</code> cleans this one sentence. <code>train_model</code> fits TF-IDF + logistic regression on the 30 training rows. <code>model.predict</code> labels the new sentence.</p><p class="where">train_model created in b_supervised.py:32 · README recording: complaint</p></div></li>
+        <li class="step"><span class="num">5</span><div class="body"><strong>local_embeddings → get_embeddings</strong><p>Loads the local MiniLM model once. <code>fit_named_groups</code> calls <code>embed</code> and <code>find_groups</code> on the 30 training sentences, then names each group by its most common human label.</p><p class="where">embed created in c_clusters.py:35 · find_groups at line 44</p></div></li>
+        <li class="step"><span class="num">6</span><div class="body"><strong>embed([sentence]) then kmeans.predict</strong><p>The new sentence is turned into numbers and dropped into a group. The README recording prints <code>group 1 (mostly complaint)</code>. Those group numbers come from the 30 training rows, so they do not match <code>python c_clusters.py</code>, which groups all 40.</p><p class="where">Called from four_answers, compare.py:162</p></div></li>
+        <li class="step"><span class="num">7</span><div class="body"><strong>classify([sentence])</strong><p><code>build_classifier</code> calls <code>get_llm</code> when no model was passed. <code>get_llm</code> calls <code>get_provider</code>, <code>get_model_name</code>, and <code>check_api_key</code>, then returns a chat client. The chain asks Gemini to fill a <code>FeedbackLabel</code>.</p><p class="where">classify created in d_genai.py:50 · get_llm in llm.py:168</p></div></li>
+        <li class="step"><span class="num">8</span><div class="body"><strong>Print four lines, or the missing-key line</strong><p>If the key is missing, <code>four_answers</code> catches <code>MissingAPIKeyError</code> and stores the setup message. The README sample shows that message for D. With a key, D is whatever label and reason the model returns.</p><p class="where">compare.py:164–168</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="board">
+    <h2>Walk: scoreboard, Gemini stays offline</h2>
+    <p class="lead">Command: <code>python compare.py</code> with no sentence.</p>
+    <div class="walk" data-walk>
+      <div class="controls">
+        <button type="button" data-prev>Previous step</button>
+        <button type="button" data-next>Next step</button>
+        <span data-step-label>Step 1</span>
+      </div>
+      <ol class="rail">
+        <li class="step"><span class="num">1</span><div class="body"><strong>compare.main → show_scoreboard</strong><p>No extra words, so it does not call <code>four_answers</code> and does not call <code>classify</code>.</p><p class="where">compare.py:179</p></div></li>
+        <li class="step"><span class="num">2</span><div class="body"><strong>load_and_split</strong><p>Same 30/10 split as every other script, because the seed is 42.</p><p class="where">common.py:72</p></div></li>
+        <li class="step"><span class="num">3</span><div class="body"><strong>score_rules</strong><p><code>rules_label</code> on each of the 10 test rows. The README recording is 6 of 10.</p><p class="where">compare.py:38 calls a_rules.py:25</p></div></li>
+        <li class="step"><span class="num">4</span><div class="body"><strong>score_supervised</strong><p><code>train_model</code> on the 30 rows. Timing starts only at <code>model.predict</code> on the 10 test rows. The README recording is 5 of 10.</p><p class="where">compare.py:43 calls b_supervised.py:32</p></div></li>
+        <li class="step"><span class="num">5</span><div class="body"><strong>score_clusters</strong><p><code>local_embeddings</code> → <code>get_embeddings</code> once. Then <code>fit_named_groups</code> (<code>embed</code> + <code>find_groups</code>). Timing covers <code>kmeans.predict(embed(test))</code>. The README recording is 6 of 10.</p><p class="where">compare.py:71</p></div></li>
+        <li class="step"><span class="num">6</span><div class="body"><strong>saved_gemini_score</strong><p>Opens <code>outputs/gemini_test_labels.csv</code> if <code>d_genai.main</code> already wrote it and the ids match this split. If the file is missing, row D prints <code>needs live run</code>. This function never calls <code>get_llm</code>.</p><p class="where">compare.py:79 reads the file written by d_genai.py:61</p></div></li>
+        <li class="step"><span class="num">7</span><div class="body"><strong>format_scoreboard</strong><p>Prints the four-row table. Times on your laptop will differ from the README.</p><p class="where">compare.py:105</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="deploy">
+    <h2>Walk: deploy one sentence</h2>
+    <p class="lead">Command: <code>python predict.py "the sambar was cold"</code></p>
+    <div class="walk" data-walk>
+      <div class="controls">
+        <button type="button" data-prev>Previous step</button>
+        <button type="button" data-next>Next step</button>
+        <span data-step-label>Step 1</span>
+      </div>
+      <ol class="rail">
+        <li class="step"><span class="num">1</span><div class="body"><strong>predict.main</strong><p>If there are no words, it prints usage and returns 2. Otherwise it joins them into one string.</p><p class="where">predict.py:56</p></div></li>
+        <li class="step"><span class="num">2</span><div class="body"><strong>load_or_train</strong><p>If <code>outputs/feedback_model.joblib</code> exists, <code>joblib.load</code> returns it. If not, <code>load_and_split</code> then <code>train_model</code> then <code>joblib.dump</code>.</p><p class="where">predict.py:24 calls common.py:72 and b_supervised.py:32</p></div></li>
+        <li class="step"><span class="num">3</span><div class="body"><strong>predict(text, model)</strong><p><code>clean_text</code> lowers the sentence and expands <code>n't</code>. <code>predict_proba</code> returns one chance per label. The biggest chance is the label and the confidence.</p><p class="where">predict.py:36 calls common.py:50</p></div></li>
+        <li class="step"><span class="num">4</span><div class="body"><strong>log_prediction</strong><p>Appends time, text, label, and confidence to <code>logs/predictions.csv</code>. Creates the header row on the first write.</p><p class="where">predict.py:43</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="commands">
+    <h2>Commands the team can run</h2>
+    <p class="lead">macOS or Linux, from the course root. Windows: <code>py -3.13 -m venv .venv</code> then <code>.\.venv\Scripts\Activate.ps1</code>.</p>
+    <pre class="tree">cd ai-engineering-course
+python3.13 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements-base.txt
+cp .env.example .env
+# paste GEMINI_API_KEY=... into .env
+
+cd ep01-four-kinds-of-ai
+python check_setup.py
+python first_call.py
+python common.py
+python a_rules.py
+python b_supervised.py
+python c_clusters.py
+python d_genai.py
+python e_reply_and_probe.py
+python predict.py "the sambar was cold"
+python compare.py
+python compare.py "Great job, the dosa was cold again."
+python -m pytest</pre>
+    <p class="note">Pytest should report about 61 passed and 1 skipped. The skip is the CrewAI helper, used in later episodes. Tests call <code>fake_llm</code> and <code>fake_embeddings</code>, so they do not spend the Gemini quota.</p>
+  </section>
+</div>
+<script>
+(function () {
+  document.querySelectorAll("a.node").forEach(function (link) {
+    link.addEventListener("click", function () {
+      var id = link.getAttribute("href").slice(1);
+      var target = document.getElementById(id);
+      if (target && target.tagName === "DETAILS") target.open = true;
+      document.querySelectorAll("a.node").forEach(function (other) {
+        if (other === link) other.setAttribute("aria-current", "true");
+        else other.removeAttribute("aria-current");
+      });
+    });
+  });
+
+  document.querySelectorAll("[data-walk]").forEach(function (walk) {
+    var steps = Array.prototype.slice.call(walk.querySelectorAll(".step"));
+    var label = walk.querySelector("[data-step-label]");
+    var prev = walk.querySelector("[data-prev]");
+    var next = walk.querySelector("[data-next]");
+    var index = 0;
+    function show(nextIndex) {
+      index = Math.max(0, Math.min(steps.length - 1, nextIndex));
+      steps.forEach(function (step, i) { step.classList.toggle("on", i === index); });
+      if (label) label.textContent = "Step " + (index + 1) + " of " + steps.length;
+      prev.disabled = index === 0;
+      next.disabled = index === steps.length - 1;
+    }
+    prev.addEventListener("click", function () { show(index - 1); });
+    next.addEventListener("click", function () { show(index + 1); });
+    show(0);
+  });
+})();
+</script>
+</body>
+</html>

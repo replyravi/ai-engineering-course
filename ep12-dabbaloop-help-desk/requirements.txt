@@ -1,0 +1,7 @@
+# Episode 12 uses the shared course libraries: one .venv at the repo root (see ../SETUP.md).
+# Installing from this folder is the same as installing ../requirements-base.txt. Nothing extra:
+# langchain-chroma + sentence-transformers (the handbook index and the semantic router),
+# langchain-classic (the classic router, Step 14), langchain-community + sqlalchemy (SQLDatabase,
+# Step 7), pydantic (the Route and SQLDraft forms) and pytest are all in it. numpy comes with
+# scikit-learn and pandas. sqlite3 is part of Python. No new model is downloaded.
+-r ../requirements-base.txt

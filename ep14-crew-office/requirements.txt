@@ -1,0 +1,19 @@
+# Episode 14 uses the CrewAI libraries, in the SECOND environment at the repo root: .venv-crewai
+# (see ../SETUP.md, part 8). Installing from this folder installs ../requirements-crewai.txt plus the lines below.
+-r ../requirements-crewai.txt
+
+# New in this episode (tested together on 2026-10-26, Python 3.11 and 3.13, macOS arm64):
+pandas==2.2.3             # prices, moving averages, volatility, drawdown (Steps 9-11); the version CrewAI's own pandas extra uses
+numexpr==2.14.2           # the safe calculator from Episode 11 (tools/calculator.py)
+
+# Our code uses these directly. CrewAI already installs all of them; the lines below pin the
+# versions this episode was tested with (the same pins as Episode 13).
+chromadb==1.5.9           # runs the local all-MiniLM-L6-v2 model in its ONNX version (crew memory, Step 8)
+onnxruntime==1.31.0       # runs both local models: the sentiment model (Step 3) and MiniLM (Step 8)
+tokenizers==0.23.3        # splits text into tokens for the sentiment model
+huggingface_hub==2.2.0    # downloads the sentiment model once (Step 3)
+lancedb==0.30.0           # where CrewAI's memory keeps its vectors (Step 8)
+numpy==2.4.6
+
+# No PyTorch and no transformers in this environment: the sentiment model runs in its ONNX version,
+# which gives the same scores as the transformers pipeline (checked on 2026-10-26).

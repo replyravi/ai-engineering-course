@@ -1,0 +1,41 @@
+id,text,label,note
+1,The biryani was far too oily and the portion was tiny.,complaint,
+2,The cashier was rude when I asked for change.,complaint,
+3,A separate counter for takeaway orders would save everyone time.,suggestion,
+4,Steel plates instead of paper ones would cut a lot of waste.,suggestion,
+5,"Found a fly in my lassi glass, not acceptable.",complaint,negation
+6,Can we get a bigger cup option for filter coffee?,suggestion,
+7,Thank you for keeping the tables so clean this semester.,praise,
+8,Prices went up again but the portions got smaller.,complaint,
+9,"Fresh fruit bowls in the morning, thank you Byte Bites!",praise,
+10,"Loved the new paneer roll, fresh and worth every rupee.",praise,
+11,"Fantastic, the card machine is broken again, so the queue never moves.",complaint,sarcasm
+12,The chutney was not fresh today and smelled sour.,complaint,negation
+13,"Oh great, the curd rice ran out by half past twelve again.",complaint,sarcasm
+14,The rajma chawal was tasty and felt just like home food.,praise,
+15,"Waited twenty five minutes for a plain paratha, the service is so slow.",complaint,
+16,Big thanks to the friendly cashier who returned my lost wallet.,praise,
+17,"Not bad at all, the veg biryani has really improved.",praise,negation
+18,The weekend thali is great value and the plates are always clean.,praise,
+19,"Please don't stop the Friday pav bhaji, just make it less spicy.",suggestion,negation
+20,The chai is great and the staff serve it really quick.,praise,
+21,"Lovely, another hair in my upma. Truly the best kitchen.",complaint,sarcasm
+22,The tables near the window are always sticky and dirty.,complaint,
+23,Could you keep the counter open until 10 pm during exams?,suggestion,
+24,How about a Jain thali option on the menu once a week?,suggestion,
+25,More charging points near the seats would be really useful.,suggestion,
+26,I have never had a softer idli anywhere.,praise,negation
+27,"The staff are always friendly, even in the exam week rush.",praise,
+28,Filter coffee here is the best on campus.,praise,
+29,"The coffee was not hot, just lukewarm brown water.",complaint,negation
+30,"The masala dosa was hot, crisp and really tasty today.",praise,
+31,It would be nice to have a small salad counter at lunch.,suggestion,
+32,Please add a few millet dishes to the breakfast menu.,suggestion,
+33,Maybe put up a board with the daily menu near the entrance.,suggestion,
+34,"The idli was stale and cold, hard as a stone.",complaint,
+35,"Wow, a forty minute wait for one samosa. Amazing service.",complaint,sarcasm
+36,"Quick service this morning, my poha came in two minutes.",praise,
+37,"Love the food, but a feedback box at the counter would help.",suggestion,
+38,You should accept UPI at the juice counter too.,suggestion,
+39,The vada was cold and soggy by lunch time.,complaint,
+40,The lemon rice was fresh and the portion was generous.,praise,

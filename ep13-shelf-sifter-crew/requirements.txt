@@ -1,0 +1,16 @@
+# Episode 13 uses the CrewAI libraries, in the SECOND environment at the repo root: .venv-crewai
+# (see ../SETUP.md, part 8). Installing from this folder installs ../requirements-crewai.txt plus the lines below.
+-r ../requirements-crewai.txt
+
+# Our code uses these directly. CrewAI already installs all of them; the lines below pin the
+# versions this episode was tested with, so a newer release cannot change your results. If pip already
+# installed a newer one (numpy 2.5 on 2026-10-24), it swaps in the tested version: a few MB at most.
+beautifulsoup4==4.15.0    # cleans the shop's HTML (Step 4)
+requests==2.34.2          # downloads pages politely (Steps 2, 3 and 6)
+chromadb==1.5.9           # runs the local all-MiniLM-L6-v2 model in its ONNX version (Step 9)
+onnxruntime==1.31.0       #   ... with these two, so the vectors stay exactly the same as tested
+tokenizers==0.23.3
+numpy==2.4.6              # cosine similarity (Step 9)
+
+# No PyTorch and no sentence-transformers in this environment: Chroma's ONNX copy of
+# all-MiniLM-L6-v2 gives the same vectors as the sentence-transformers model of Episodes 07-08.
